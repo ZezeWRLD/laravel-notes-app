@@ -1,0 +1,30 @@
+<?php
+
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\NoteController;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+
+Route::get('/', function () {
+    return view('welcome');
+});
+
+Route::get('/dashboard', function () {
+    // Get notes for the logged-in user
+    /** @var \App\Models\User $user */
+    $user = Auth::user();
+    $notes = $user->notes()->latest()->get();
+    return view('dashboard', compact('notes'));
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    // Profile routes
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // Notes resource routes
+    Route::resource('notes', NoteController::class);
+});
+
+require __DIR__.'/auth.php';
