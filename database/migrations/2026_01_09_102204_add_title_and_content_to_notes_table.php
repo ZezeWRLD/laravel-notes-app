@@ -11,13 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-         Schema::table('notes', function (Blueprint $table) {
-            // Add title column after user_id
-            $table->string('title')->after('user_id');
+        // Only add the columns if they don't already exist (prevents duplicate column errors in tests)
+        if (!Schema::hasColumn('notes', 'title')) {
+            Schema::table('notes', function (Blueprint $table) {
+                // Add title column after user_id
+                $table->string('title')->after('user_id');
+            });
+        }
 
-            // Add content column after title
-            $table->text('content')->nullable()->after('title');
-        });
+        if (!Schema::hasColumn('notes', 'content')) {
+            Schema::table('notes', function (Blueprint $table) {
+                // Add content column after title
+                $table->text('content')->nullable()->after('title');
+            });
+        }
     }
 
     /**
@@ -25,8 +32,15 @@ return new class extends Migration
      */
     public function down(): void
     {
-         Schema::table('notes', function (Blueprint $table) {
-            $table->dropColumn(['title', 'content']);
-        });
+        if (Schema::hasColumn('notes', 'title') || Schema::hasColumn('notes', 'content')) {
+            Schema::table('notes', function (Blueprint $table) {
+                if (Schema::hasColumn('notes', 'title')) {
+                    $table->dropColumn('title');
+                }
+                if (Schema::hasColumn('notes', 'content')) {
+                    $table->dropColumn('content');
+                }
+            });
+        }
     }
 };

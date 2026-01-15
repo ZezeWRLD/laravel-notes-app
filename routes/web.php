@@ -27,4 +27,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('notes', NoteController::class);
 });
 
+// Preview email - exactly like tutorial
+Route::get('/preview-note-email', function () {
+    $note = \App\Models\Note::first() ?? new \App\Models\Note([
+        'title' => 'Sample Note',
+        'content' => 'This is a sample note for preview.',
+    ]);
+
+    return new \App\Mail\NoteNotification($note, 'created');
+});
+
 require __DIR__.'/auth.php';

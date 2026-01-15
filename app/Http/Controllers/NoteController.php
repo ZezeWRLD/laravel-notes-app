@@ -6,6 +6,8 @@ use App\Models\Note;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\NoteNotification;
 
 class NoteController extends Controller
 {
@@ -43,12 +45,14 @@ class NoteController extends Controller
 
         /** @var \App\Models\User $user */
         $user = Auth::user();
-        $user->notes()->create([
+        $note = $user->notes()->create([
             'title' => $request->input('title'),
             'content' => $request->input('content'),
         ]);
 
-        return redirect()->route('notes.index')
+        Mail::to(auth()->user()->email)->queue(new NoteNotification($note, 'created'));
+
+        return redirect()->route('notes.show', $note)
             ->with('success', 'Note created successfully.');
     }
 
@@ -91,7 +95,9 @@ class NoteController extends Controller
         'content' => $request->input('content'),
     ]);
 
-    return redirect()->route('notes.index')
+    Mail::to(auth()->user()->email)->queue(new NoteNotification($note, 'updated'));
+
+    return redirect()->route('notes.show', $note)
         ->with('success', 'Note updated successfully.');
 }
 
@@ -103,7 +109,18 @@ class NoteController extends Controller
         // Authorization - user can only delete their own notes
         $this->authorize('delete', $note);
 
+        // Store note data before deletion
+        $noteData = $note->toArray();
         $note->delete();
+
+        // Create a dummy note object for the email
+        $dummyNote = (object) [
+            'id' => $noteData['id'],
+            'title' => $noteData['title'],
+        ];
+
+        // Send email - exactly like tutorial
+        Mail::to(auth()->user()->email)->queue(new NoteNotification($dummyNote, 'deleted'));
 
         return redirect()->route('notes.index')
             ->with('success', 'Note deleted successfully.');
