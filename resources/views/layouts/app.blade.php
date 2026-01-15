@@ -9,23 +9,24 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-    <!-- Vite assets (Exactly like tutorial) -->
+    <!-- Vite assets -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     @stack('styles')
 </head>
 <body class="font-sans antialiased bg-gray-50">
-    <!-- Navigation (Like tutorial auth conditionals) -->
+    <!-- Navigation -->
     <nav class="bg-white shadow-lg">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
                 <div class="flex">
                     <div class="flex-shrink-0 flex items-center">
-                        <a href="{{ route('notes.index') }}" class="text-xl font-bold text-note-primary">
+                        <a href="{{ route('notes.index') }}" class="text-xl font-bold text-blue-600">
                             📝 Notes App
                         </a>
                     </div>
 
+                    @auth
                     <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
                         <a href="{{ route('notes.index') }}"
                            class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700
@@ -38,22 +39,22 @@
                             Create Note
                         </a>
                     </div>
+                    @endauth
                 </div>
 
                 <div class="hidden sm:ml-6 sm:flex sm:items-center">
-                    <!-- Auth Navigation (Exactly like tutorial @auth/@guest) -->
                     @auth
                         <div class="flex items-center space-x-4">
                             <span class="text-sm text-gray-700">
                                 Welcome, {{ auth()->user()->name }}
                             </span>
 
-                            <!-- Logout form (Exactly like tutorial) -->
-                            <x-forms.form method="DELETE" action="{{ route('logout') }}" class="inline">
-                                <x-forms.button type="submit" class="text-sm">
+                            <form method="POST" action="{{ route('logout') }}" class="inline">
+                                @csrf
+                                <button type="submit" class="text-sm font-medium text-gray-500 hover:text-gray-900">
                                     Log Out
-                                </x-forms.button>
-                            </x-forms.form>
+                                </button>
+                            </form>
                         </div>
                     @endauth
 
@@ -64,7 +65,7 @@
                                 Log in
                             </a>
                             <a href="{{ route('register') }}"
-                               class="text-sm font-medium text-white bg-note-primary hover:bg-note-accent
+                               class="text-sm font-medium text-white bg-blue-600 hover:bg-blue-700
                                       px-4 py-2 rounded-md transition">
                                 Sign up
                             </a>

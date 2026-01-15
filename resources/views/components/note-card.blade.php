@@ -21,14 +21,14 @@
             @endif
         </div>
     </div>
-    <div class="flex justify-between items-center text-sm text-gray-500">
+    <div class="flex justify-between items-center text-sm text-gray-700 font-medium">
         <span>{{ $note->created_at->diffForHumans() }}</span>
         <div class="flex space-x-4">
-            <a href="{{ route('notes.edit', $note) }}" class="hover:text-note-primary">Edit</a>
+            <a href="{{ route('notes.edit', $note) }}" class="text-note-primary hover:text-note-accent font-semibold transition">Edit</a>
             <form action="{{ route('notes.destroy', $note) }}" method="POST" class="inline">
                 @csrf
                 @method('DELETE')
-                <button type="submit" class="hover:text-red-500"
+                <button type="submit" class="text-red-600 hover:text-red-700 font-semibold transition"
                         onclick="return confirm('Delete this note?')">Delete</button>
             </form>
         </div>

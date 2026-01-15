@@ -1,13 +1,5 @@
 @extends('layouts.app')
 
-@push('styles')
-    @vite(['resources/css/notes.css'])
-@endpush
-
-@push('scripts')
-    @vite(['resources/js/notes.js'])
-@endpush
-
 @section('content')
     <x-slot name="header">
         <div class="flex justify-between items-center">

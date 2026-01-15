@@ -15,8 +15,11 @@ class SearchController extends Controller
         $query = $request->query('q', '');
 
     $notes = Note::query()
-        ->where('title', 'like', "%{$query}%")
-        ->orWhere('content', 'like', "%{$query}%")
+        ->where('user_id', auth()->id())
+        ->where(function($q) use ($query) {
+            $q->where('title', 'like', "%{$query}%")
+              ->orWhere('content', 'like', "%{$query}%");
+        })
         ->with(['tags'])
         ->latest()
         ->paginate(20);

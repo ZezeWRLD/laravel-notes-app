@@ -7,16 +7,16 @@
         'lg' => 'px-4 py-2 text-base',
     ][$size] ?? $sizeClasses['base'];
 
-    $classes = "inline-flex items-center bg-note-primary/10 text-note-primary rounded-full
-                font-medium hover:bg-note-primary/20 transition-colors duration-200 {$sizeClasses}";
+    $bgColor = $tag->color ?? '#3b82f6';
+    $classes = "inline-flex items-center rounded-full font-medium hover:opacity-80 transition-opacity duration-200 {$sizeClasses}";
 @endphp
 
 @if($href)
-    <a href="{{ $href }}" {{ $attributes->merge(['class' => $classes]) }}>
+    <a href="{{ $href }}" {{ $attributes->merge(['class' => $classes, 'style' => "background-color: {$bgColor}20; color: {$bgColor}"]) }}>
         {{ $slot }}
     </a>
 @else
-    <span {{ $attributes->merge(['class' => $classes]) }}>
+    <span {{ $attributes->merge(['class' => $classes, 'style' => "background-color: {$bgColor}20; color: {$bgColor}"]) }}>
         {{ $slot }}
     </span>
 @endif

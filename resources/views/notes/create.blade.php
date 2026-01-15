@@ -1,13 +1,5 @@
 @extends('layouts.app')
 
-@push('styles')
-    @vite(['resources/css/notes.css'])
-@endpush
-
-@push('scripts')
-    @vite(['resources/js/notes.js'])
-@endpush
-
 @section('content')
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
@@ -73,6 +65,23 @@
                                 @error('content')
                                     <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                                 @enderror
+                            </div>
+
+                            <!-- Tags Field -->
+                            <div>
+                                <label for="tags" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Tags
+                                </label>
+                                <input type="text"
+                                       name="tags"
+                                       id="tags"
+                                       value="{{ old('tags') }}"
+                                       class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                                       placeholder="Add tags separated by commas (e.g., work, important, urgent)">
+
+                                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                                    Separate multiple tags with commas
+                                </p>
                             </div>
 
                             <!-- Form Actions -->
