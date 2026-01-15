@@ -1,0 +1,21 @@
+/* Notes-specific styles */
+.note-card {
+    transition: all 0.2s ease;
+}
+
+.note-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.markdown-content h1 {
+    @apply text-2xl font-bold mb-4;
+}
+
+.markdown-content h2 {
+    @apply text-xl font-bold mb-3;
+}
+
+.markdown-content p {
+    @apply mb-4;
+}

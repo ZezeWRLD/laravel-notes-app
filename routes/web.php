@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\NoteController;
+use App\Http\Controllers\SearchController;
+use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -36,5 +38,10 @@ Route::get('/preview-note-email', function () {
 
     return new \App\Mail\NoteNotification($note, 'created');
 });
+
+Route::get('/search', SearchController::class)->name('search');
+
+// Tags with route model binding
+Route::get('/tags/{tag:slug}', TagController::class)->name('tags.show');
 
 require __DIR__.'/auth.php';

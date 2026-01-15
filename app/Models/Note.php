@@ -25,4 +25,17 @@ class Note extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class);
+    }
+
+    public function tag($tagName)
+    {
+        $tag = Tag::firstOrCreate(['name' => $tagName]);
+        $this->tags()->syncWithoutDetaching([$tag->id]);
+        return $tag;
+    }
+
 }
